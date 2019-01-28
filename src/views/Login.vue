@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="3"></b-col>
       <b-col cols="6" class="login_card">
-        <b-card img-src="https://placekitten.com/1000/300"
+        <b-card img-src="../assets/cat.jpg"
                 img-alt="Card image"
                 img-top>
           <b-form @submit="onSubmit" v-if="show">
@@ -60,7 +60,8 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      // alert(JSON.stringify(this.form))
+      this.$router.push('/mapList')
     }
   },
   beforeCreate () {
@@ -82,7 +83,8 @@ export default {
   .login_card {
     margin-top: 15%;
   }
-  .card-text{
+
+  .card-text {
     font-size: 18px;
     /*font-weight: bold;*/
   }
