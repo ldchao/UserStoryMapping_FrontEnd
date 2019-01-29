@@ -22,7 +22,7 @@ export default new Router({
       component: MapList
     },
     {
-      path: '/concreteMap',
+      path: '/concreteMap/:id',
       name: 'concreteMap',
       component: ConcreteMap
     }
