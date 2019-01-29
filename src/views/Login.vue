@@ -40,7 +40,9 @@
           </b-form>
         </b-card>
       </b-col>
-      <b-col cols="3"></b-col>
+      <b-col cols="3">
+        <div>{{get_info}}</div>
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -54,7 +56,8 @@ export default {
         username: '',
         password: ''
       },
-      show: true
+      show: true,
+      get_info: ''
     }
   },
   methods: {
@@ -63,6 +66,11 @@ export default {
       // alert(JSON.stringify(this.form))
       this.$router.push('/mapList')
     }
+  },
+  mounted () {
+    axios
+      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+      .then(response => (this.get_info = response))
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background:#009688')
