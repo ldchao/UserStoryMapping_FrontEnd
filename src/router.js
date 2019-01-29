@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login'
-import About from './views/About'
 import MapList from './views/MapList'
+import ConcreteMap from './views/ConcreteMap'
 
 Vue.use(Router)
 
@@ -17,14 +17,14 @@ export default new Router({
       component: Login
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About
-    },
-    {
       path: '/mapList',
       name: 'mapList',
       component: MapList
+    },
+    {
+      path: '/concreteMap',
+      name: 'concreteMap',
+      component: ConcreteMap
     }
   ]
 })

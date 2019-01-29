@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="3"></b-col>
       <b-col cols="6" class="login_card">
-        <b-card img-src="../assets/cat.jpg"
+        <b-card img-src="https://picsum.photos/600/300/?image=25"
                 img-alt="Card image"
                 img-top>
           <b-form @submit="onSubmit" v-if="show">

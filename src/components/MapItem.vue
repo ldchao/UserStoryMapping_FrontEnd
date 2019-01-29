@@ -18,8 +18,8 @@
         <b-list-group-item>最后修改时间：2017/1/28</b-list-group-item>
       </b-list-group>
       <b-card-body>
-        <a href="#"
-           class="card-link">Card link</a>
+        <b-link to="concreteMap"
+           class="card-link">Card link</b-link>
       </b-card-body>
     </b-card>
   </div>
