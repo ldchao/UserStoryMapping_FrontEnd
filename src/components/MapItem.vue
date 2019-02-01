@@ -1,11 +1,11 @@
 <template>
   <div class="mapItem">
-    <b-card :title=mapItem.mapTitle>
+    <b-card :title=mapItem.mapTitle >
       <p class="card-text">
         {{mapItem.mapDesc}}
       </p>
       <b-link :to="'concreteMap/'+mapItem.id"
-              class="card-link">Card link
+              class="card-link">查看map
       </b-link>
       <b-link href="#"
               class="card-link">删除Map

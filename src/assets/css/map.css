@@ -1,0 +1,29 @@
+.map_list_ul {
+    padding: 0;
+    margin: 0;
+}
+
+.map_list_li {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.map_list {
+    display: block;
+    white-space: nowrap;
+    float:left;
+}
+
+.main-wrapper {
+    margin-top: 64px;
+}
+
+.css_add {
+    width: 200px;
+    height: 130px;
+    margin-left: 5px;
+    margin-top: 5px;
+    line-height:116px;
+}

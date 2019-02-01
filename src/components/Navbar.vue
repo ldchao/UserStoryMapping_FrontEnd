@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="md" type="dark" variant="info">
+  <b-navbar toggleable="md" fixed="top" type="dark" variant="info">
 
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -41,6 +41,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped lang="scss"></style>

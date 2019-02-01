@@ -1,20 +1,20 @@
 <template>
   <div>
     <div>
-      <b-card class="css_activity"
+      <b-card class="css_task"
               :title="title"
               header-tag="header"
-              footer-tag="footer" v-b-modal="'activity_modal_'+id">
+              footer-tag="footer" v-b-modal="'task_modal_'+id">
         <div style="margin-top: 40px;">
           <label style="float:left">{{storyPoint}}</label>
-          <b-button href="#" variant="outline-info" size="sm" style="float:right;">删除
+          <b-button href="#" variant="outline-success" size="sm" style="float:right;">删除
           </b-button>
         </div>
         <!--<p class="card-text">
         Header and footers using slots.</p>-->
       </b-card>
-
-      <b-modal :id="'activity_modal_'+id"
+      <!--card with a footer-->
+      <b-modal :id="'task_modal_'+id"
                centered
                hide-footer
                title="Modal Variants"
@@ -58,29 +58,23 @@
           </b-row>
         </b-container>
       </b-modal>
-
-      <!-- modal-variant-1.vue -->
     </div>
-    <ul class="map_list_ul">
-      <li v-for="taskItem in form.taskList" class="map_list_li">
-        <task-card :id="taskItem.id" :title="taskItem.title" :story-point="taskItem.storyPoint"></task-card>
-      </li>
-      <li class="map_list_li">
-        <b-button href="#" variant="outline-success" class="css_add">添加task
-        </b-button>
-        <hr>
-      </li>
-    </ul>
+    <hr>
+    <div v-for="storyItem in form.storyList">
+      <story-card :id="storyItem.id" :title="storyItem.title" :story-point="storyItem.storyPoint"></story-card>
+    </div>
+    <b-button href="#" variant="outline-warning" class="css_add_story">添加story
+      </b-button>
   </div>
 </template>
 
 <script>
 
-import TaskCard from './TaskCard'
+import StoryCard from './StoryCard'
 
 export default {
-  name: 'ActivityCard',
-  components: { TaskCard },
+  name: 'TaskCard',
+  components: { StoryCard },
   props: {
     id: Number,
     title: String,
@@ -91,10 +85,10 @@ export default {
       form: {
         title: '',
         desc: '',
-        taskList: [
-          { id: this.id * 3 + 1, title: 'Hello World', storyPoint: 19 },
-          { id: this.id * 3 + 2, title: 'Hello World', storyPoint: 19 },
-          { id: this.id * 3 + 3, title: 'Hello World', storyPoint: 19 }
+        storyList: [
+          { id:this.id*3+1, title: 'Hello World', storyPoint: 19 },
+          { id:this.id*3+2, title: 'Hello World', storyPoint: 19 },
+          { id:this.id*3+3, title: 'Hello World', storyPoint: 19 }
         ]
       }
     }
@@ -103,15 +97,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .css_activity {
+  .css_task {
     width: 200px;
     height: 130px;
-    margin-left: 5px;
-    margin-top: 5px;
-    float: top;
-    background-color: lightblue;
-
+    margin: 5px;
+    /*float:left;*/
+    background-color: lightgreen;
   }
-
-  @import "../assets/css/map.css";
+  .css_add_story {
+    width: 200px;
+    height: 130px;
+    margin-top: 5px;
+    line-height:116px;
+  }
 </style>
