@@ -26,7 +26,7 @@
             <em>用户</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Signout</b-dropdown-item>
+          <b-dropdown-item @click="logout">Signout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
@@ -36,9 +36,29 @@
 </template>
 
 <script>
+import { setCookie, getCookie, delCookie }from '../assets/Cookie'
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    logout () {
+      //delete the cookie
+      delCookie('username')
+      this.$router.push('/')
+    }
+  },
+  mounted () {
+    /*页面挂载获取保存的cookie值，渲染到页面上*/
+    let uname = getCookie('username')
+    this.name = uname
+    /*如果cookie不存在，则跳转到登录页*/
+    if(uname == ""){
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped>
+
+</style>

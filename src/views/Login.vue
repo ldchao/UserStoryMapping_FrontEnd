@@ -6,9 +6,10 @@
         <b-card img-src="https://picsum.photos/600/300/?image=25"
                 img-alt="Card image"
                 img-top>
-          <b-form @submit="onSubmit" v-if="show">
+          <b-form>
+            <p variant="info" v-if="showHint" style="font-size: large;color:red">{{hint}}</p>
             <b-row>
-              <b-col cols="3"><label for="exampleInput1" class="card-text">用户名:</label></b-col>
+              <b-col cols="3"><label class="card-text">用户名:</label></b-col>
               <b-col cols="9">
                 <b-form-input id="exampleInput1"
                               type="text"
@@ -19,7 +20,7 @@
               </b-col>
             </b-row>
             <b-row>
-              <b-col cols="3"><label for="exampleInput2" class="card-text">密码：</label></b-col>
+              <b-col cols="3"><label class="card-text">密码：</label></b-col>
               <b-col cols="9">
                 <b-form-input id="exampleInput2"
                               type="password"
@@ -31,23 +32,22 @@
             </b-row>
             <b-row class="buttons">
               <b-col cols="6">
-                <b-button type="submit" variant="primary">登录</b-button>
+                <b-button  variant="primary" @click="submit">登录</b-button>
               </b-col>
               <b-col cols="6">
-                <b-button type="submit" variant="primary">注册</b-button>
+                <b-button variant="primary">注册</b-button>
               </b-col>
             </b-row>
           </b-form>
         </b-card>
-      </b-col>
-      <b-col cols="3">
-        <div>{{get_info}}</div>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
+import {setCookie,getCookie} from '../assets/Cookie'
+
 export default {
   name: 'login',
   data () {
@@ -56,21 +56,64 @@ export default {
         username: '',
         password: ''
       },
-      show: true,
-      get_info: ''
+      hint: 'initial',
+      showHint: false
     }
   },
   methods: {
-    onSubmit (evt) {
-      evt.preventDefault()
-      // alert(JSON.stringify(this.form))
-      this.$router.push('/mapList')
+    submit () {
+      // // evt.preventDefault()
+      // // alert(JSON.stringify(this.form))
+      console.log(this.form.username)
+      console.log(this.form.password)
+      let param = new URLSearchParams()
+      param.append('username', this.form.username)
+      param.append('password', this.form.password)
+
+      //remote ip: 47.101.199.12
+      //local  ip: localhost:8088
+      let self = this
+      axios.post('http://47.101.199.12:8088/user/login', param).then((res) => {
+        switch (res.data) {
+          case 'success':
+            self.showHint = true
+            self.hint = '登录成功'
+            setCookie('username',self.form.username,1000*60)
+            setTimeout(function(){
+              self.$router.push('/mapList')
+            }.bind(this),1000)
+            console.log("登录成功")
+            break;
+          case 'no_user':
+            self.showHint = true
+            self.hint = '用户名不存在'
+            console.log("用户名不存在")
+            break;
+          case 'wrong_password':
+            self.showHint = true
+            self.hint = '密码错误'
+            console.log("密码错误")
+            break;
+        }
+      })
     }
   },
   mounted () {
-    axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then(response => (this.get_info = response))
+    if (getCookie('username')){
+      this.$router.push('/mapList')
+    }
+    //remote ip: 47.101.199.12
+    //local ip: localhost:8088
+    // let param = new URLSearchParams();
+    // param.append('username', 'luhailong');
+    // param.append('password', '123456');
+    // let self =this
+    // axios.post('http://localhost:8088/user/login', param).then((res) => {
+    //   console.log(res.data)
+    //   if (res.data == "success"){
+    //     self.$router.push('/mapList')
+    //   }
+    // })
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background:#009688')
