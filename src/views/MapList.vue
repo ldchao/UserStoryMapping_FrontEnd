@@ -29,7 +29,7 @@
               </b-form>
             </b-modal>
           </div>
-          <div v-for="mapItem in mapList">
+          <div v-for="mapItem in mapList" :key="mapItem.id">
             <map-item :map-item="mapItem"></map-item>
           </div>
         </b-col>
@@ -51,36 +51,21 @@ export default {
   components: { MapItem, Navbar },
   data () {
     return {
-      url: process.env.VUE_APP_URL,
-      mapList: [{
-        id: 1,
-        mapTitle: '出错了才会出现的标题',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }],
+      baseUrl: process.env.VUE_APP_URL,
+      mapList: [],
       add_title: '',
       add_des: ''
     }
   },
   mounted () {
     let self = this
-    axios.get(this.url + '/map/map_list', {
+    axios.get(this.baseUrl + '/map/map_list', {
       params: {
         userId: getCookie('userId')
       }
     }).then((res) => {
       self.mapList = res.data
+      console.log(self.mapList)
     })
   }
 }

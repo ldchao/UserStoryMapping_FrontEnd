@@ -52,7 +52,7 @@ export default {
   name: 'login',
   data () {
     return {
-      url: process.env.VUE_APP_URL,
+      baseUrl: process.env.VUE_APP_URL,
       form: {
         username: '',
         password: ''
@@ -70,7 +70,7 @@ export default {
       param.append('password', this.form.password)
 
       let self = this
-      axios.post(this.url+'/user/login', param).then((res) => {
+      axios.post(this.baseUrl+'/user/login', param).then((res) => {
         switch (res.data.loginMessage) {
           case 'success':
             self.showHint = true
