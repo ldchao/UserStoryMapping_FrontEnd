@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login'
 import MapList from './views/MapList'
 import ConcreteMap from './views/ConcreteMap'
+import Register from './views/Register'
 
 Vue.use(Router)
 
@@ -15,6 +16,11 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/mapList',

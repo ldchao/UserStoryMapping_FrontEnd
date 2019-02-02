@@ -35,7 +35,7 @@
                 <b-button  variant="primary" @click="submit">登录</b-button>
               </b-col>
               <b-col cols="6">
-                <b-button variant="primary">注册</b-button>
+                <b-button variant="primary" @click="register">注册</b-button>
               </b-col>
             </b-row>
           </b-form>
@@ -76,8 +76,8 @@ export default {
             self.showHint = true
             self.hint = '登录成功'
             console.log("登录成功")
-            setCookie('username',self.form.username,1000*60)
-            setCookie('userId',res.data.id,1000*60)
+            setCookie('username',self.form.username)
+            setCookie('userId',res.data.id)
 
             setTimeout(function(){
               self.$router.push('/mapList')
@@ -95,6 +95,9 @@ export default {
             break;
         }
       })
+    },
+    register(){
+      this.$router.push('/register')
     }
   },
   mounted(){

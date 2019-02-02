@@ -23,7 +23,7 @@
         <b-nav-item-dropdown right>
           <!-- Using button-content slot -->
           <template slot="button-content">
-            <em>用户</em>
+            <em>{{username}}</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item @click="logout">Signout</b-dropdown-item>
@@ -40,6 +40,11 @@ import { setCookie, getCookie, delCookie }from '../assets/Cookie'
 
 export default {
   name: 'Navbar',
+  data(){
+    return {
+      username:''
+    }
+  },
   methods: {
     logout () {
       //delete the cookie
@@ -51,7 +56,7 @@ export default {
   mounted () {
     /*页面挂载获取保存的cookie值，渲染到页面上*/
     let uname = getCookie('username')
-    this.name = uname
+    this.username = uname
     /*如果cookie不存在，则跳转到登录页*/
     if(uname == ""){
       this.$router.push('/')

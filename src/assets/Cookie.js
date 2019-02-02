@@ -1,7 +1,8 @@
 /*用export把方法暴露出来*/
 /*设置cookie*/
-export function setCookie(c_name,value,expire) {
+export function setCookie(c_name,value) {
   var date=new Date()
+  let expire = 1000*60
   date.setSeconds(date.getSeconds()+expire)
   document.cookie=c_name+ "="+escape(value)+"; expires="+date.toGMTString()
   console.log(document.cookie)

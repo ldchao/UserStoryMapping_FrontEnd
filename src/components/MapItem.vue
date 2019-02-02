@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import {getCookie} from '../assets/Cookie'
+
 export default {
   name: 'MapItem',
   props: {
@@ -33,6 +35,7 @@ export default {
   methods: {
     deleteMap () {
       let param = new URLSearchParams()
+      param.append('userId',getCookie('userId'))
       param.append('mapId', this.mapItem.id)
       let self = this
 
