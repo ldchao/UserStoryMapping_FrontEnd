@@ -11,19 +11,19 @@
             <b-modal centered id="add_map" title="新建Map" style="text-align : left">
               <b-form>
                 <b-form-group label="标题:"
-                label-for="title">
+                              label-for="title">
                   <b-form-input type="text"
-                  v-model="add_title"
-                  required
-                  placeholder="Enter title">
+                                v-model="add_title"
+                                required
+                                placeholder="Enter title">
                   </b-form-input>
                 </b-form-group>
                 <b-form-group label="描述:"
-                label-for="desc">
+                              label-for="desc">
                   <b-form-textarea placeholder="Enter some description"
-                  :rows="4"
-                  v-model="add_des"
-                  :max-rows="6">
+                                   :rows="4"
+                                   v-model="add_des"
+                                   :max-rows="6">
                   </b-form-textarea>
                 </b-form-group>
               </b-form>
@@ -44,43 +44,17 @@
 // @ is an alias to /src
 import Navbar from '../components/Navbar'
 import MapItem from '../components/MapItem'
+import { getCookie } from '../assets/Cookie'
 
 export default {
   name: 'MapList',
   components: { MapItem, Navbar },
   data () {
     return {
+      url: process.env.VUE_APP_URL,
       mapList: [{
         id: 1,
-        mapTitle: 'ldchao',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
-        mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
-      }, {
-        id: 2,
-        mapTitle: 'lhlong',
+        mapTitle: '出错了才会出现的标题',
         mapDesc: ' 一些简单的描述，巴拉巴拉巴拉巴拉'
       }, {
         id: 2,
@@ -99,11 +73,16 @@ export default {
       add_des: ''
     }
   },
-  // mounted () {
-  //   axios
-  //     .get('')
-  //     .then(response => (this.mapList = response))
-  // }
+  mounted () {
+    let self = this
+    axios.get(this.url + '/map/map_list', {
+      params: {
+        userId: getCookie('userId')
+      }
+    }).then((res) => {
+      self.mapList = res.data
+    })
+  }
 }
 </script>
 
@@ -113,6 +92,7 @@ export default {
     display: inline-block;
     margin-top: 15px;
   }
+
   .main-wrapper {
     margin-top: 64px;
   }
