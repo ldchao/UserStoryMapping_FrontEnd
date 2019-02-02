@@ -52,6 +52,7 @@ export default {
   name: 'login',
   data () {
     return {
+      url: process.env.VUE_APP_URL,
       form: {
         username: '',
         password: ''
@@ -62,27 +63,25 @@ export default {
   },
   methods: {
     submit () {
-      // // evt.preventDefault()
-      // // alert(JSON.stringify(this.form))
       console.log(this.form.username)
       console.log(this.form.password)
       let param = new URLSearchParams()
       param.append('username', this.form.username)
       param.append('password', this.form.password)
 
-      //remote ip: 47.101.199.12
-      //local  ip: localhost:8088
       let self = this
-      axios.post('http://47.101.199.12:8088/user/login', param).then((res) => {
-        switch (res.data) {
+      axios.post(this.url+'/user/login', param).then((res) => {
+        switch (res.data.loginMessage) {
           case 'success':
             self.showHint = true
             self.hint = '登录成功'
+            console.log("登录成功")
             setCookie('username',self.form.username,1000*60)
+            setCookie('userId',res.data.id,1000*60)
+
             setTimeout(function(){
               self.$router.push('/mapList')
             }.bind(this),1000)
-            console.log("登录成功")
             break;
           case 'no_user':
             self.showHint = true
@@ -98,22 +97,10 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted(){
     if (getCookie('username')){
       this.$router.push('/mapList')
     }
-    //remote ip: 47.101.199.12
-    //local ip: localhost:8088
-    // let param = new URLSearchParams();
-    // param.append('username', 'luhailong');
-    // param.append('password', '123456');
-    // let self =this
-    // axios.post('http://localhost:8088/user/login', param).then((res) => {
-    //   console.log(res.data)
-    //   if (res.data == "success"){
-    //     self.$router.push('/mapList')
-    //   }
-    // })
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background:#009688')

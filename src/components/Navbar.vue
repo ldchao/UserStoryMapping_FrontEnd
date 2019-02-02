@@ -44,6 +44,7 @@ export default {
     logout () {
       //delete the cookie
       delCookie('username')
+      delCookie('userId')
       this.$router.push('/')
     }
   },
