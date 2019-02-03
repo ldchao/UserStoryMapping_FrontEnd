@@ -91,7 +91,7 @@
             </b-form-group>
           </b-form>
           <div slot="modal-footer" class="w-100">
-            <p class="float-left">Modal Footer Content</p>
+            <p class="float-left"></p>
             <b-btn size="sm" class="float-right" variant="primary" @click="addTask">
               OK
             </b-btn>
