@@ -24,7 +24,7 @@
                               label-for="desc">
                   <b-form-textarea placeholder="Enter some description"
                                    :rows="4"
-                                   v-model="add_des"
+                                   v-model="add_desc"
                                    :max-rows="6">
                   </b-form-textarea>
                 </b-form-group>
@@ -57,7 +57,7 @@ export default {
     return {
       baseUrl: process.env.VUE_APP_URL,
       add_title: '',
-      add_des: '',
+      add_desc: '',
       activityList: [],
       show:false
     }
@@ -67,12 +67,14 @@ export default {
       let param = new URLSearchParams()
       param.append('mid', this.$route.params.id)
       param.append('title', this.add_title)
-      param.append('desc', this.add_des)
+      param.append('desc', this.add_desc)
       let self = this
       axios.post(this.baseUrl+'/activity/add_activity', param).then((res) => {
         self.activityList.push(res.data)
         self.show = false
         console.log("添加成功")
+        this.add_title = ''
+        this.add_desc = ''
       })
     }
   },

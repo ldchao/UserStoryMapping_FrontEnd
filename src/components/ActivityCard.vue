@@ -174,6 +174,8 @@ export default {
         self.taskList.push(res.data)
         self.modal_show = false
         console.log("添加成功")
+        this.add_title = ''
+        this.add_desc = ''
       })
     }
   },
