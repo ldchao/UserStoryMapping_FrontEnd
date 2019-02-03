@@ -7,8 +7,10 @@
               footer-tag="footer" v-b-modal="'task_modal_'+id">
         <div style="margin-top: 40px;">
           <label style="float:left">{{storyPoint}}</label>
-          <b-button href="#" variant="outline-success" size="sm" style="float:right;">删除
-          </b-button>
+          <b-btn variant="outline-success" size="sm" style="float:right;" @click="deleteTask">删除
+          </b-btn>
+          &nbsp;
+          <b-btn variant="outline-success" size="sm" style="float:right;margin-right: 5px" v-b-modal="'task_modal_'+id">编辑 </b-btn>
         </div>
         <!--<p class="card-text">
         Header and footers using slots.</p>-->
@@ -31,7 +33,7 @@
                     <b-form-group label="标题:"
                                   label-for="title">
                       <b-form-input type="text"
-                                    v-model="form.title"
+                                    v-model="title"
                                     required
                                     placeholder="Enter title">
                       </b-form-input>
@@ -39,7 +41,7 @@
                     <b-form-group label="描述:"
                                   label-for="desc">
                       <b-form-textarea placeholder="Enter some description"
-                                       v-model="form.desc"
+                                       v-model="desc"
                                        :rows="4"
                                        :max-rows="6">
                       </b-form-textarea>
@@ -60,11 +62,45 @@
       </b-modal>
     </div>
     <hr>
-    <div v-for="storyItem in form.storyList">
-      <story-card :id="storyItem.id" :title="storyItem.title" :story-point="storyItem.storyPoint"></story-card>
+    <div v-for="storyItem in storyList">
+      <story-card :id="storyItem.sid" :title="storyItem.title" :desc="storyItem.desc" :story-point="storyItem.points"></story-card>
     </div>
-    <b-button href="#" variant="outline-warning" class="css_add_story">添加story
-      </b-button>
+    <b-btn variant="outline-warning" class="css_add_story" v-b-modal="'add_story'+id">添加story
+      </b-btn>
+    <b-modal v-model="modal_show"  centered :id="'add_story'+id" title="新建story" style="text-align : left">
+      <b-form>
+        <b-form-group label="标题:"
+                      label-for="title">
+          <b-form-input type="text"
+                        v-model="add_title"
+                        required
+                        placeholder="Enter title">
+          </b-form-input>
+        </b-form-group>
+        <b-form-group label="描述:"
+                      label-for="desc">
+          <b-form-textarea placeholder="Enter some description"
+                           :rows="4"
+                           v-model="add_desc"
+                           :max-rows="6">
+          </b-form-textarea>
+        </b-form-group>
+        <b-form-group label="故事点:"
+                      label-for="points">
+          <b-form-input type="text"
+                        v-model="add_points"
+                        required
+                        placeholder="Enter story points">
+          </b-form-input>
+        </b-form-group>
+      </b-form>
+      <div slot="modal-footer" class="w-100">
+        <p class="float-left">Modal Footer Content</p>
+        <b-btn size="sm" class="float-right" variant="primary"  @click="addStory">
+          OK
+        </b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -78,20 +114,83 @@ export default {
   props: {
     id: Number,
     title: String,
-    storyPoint: Number
+    desc: String
   },
   data () {
     return {
-      form: {
-        title: '',
-        desc: '',
-        storyList: [
-          { id:this.id*3+1, title: 'Hello World', storyPoint: 19 },
-          { id:this.id*3+2, title: 'Hello World', storyPoint: 19 },
-          { id:this.id*3+3, title: 'Hello World', storyPoint: 19 }
-        ]
-      }
+      baseUrl: process.env.VUE_APP_URL,
+      modal_show:false,
+      add_title: '',
+      add_desc: '',
+      add_points: '',
+      rid: 4,
+      storyList: []
     }
+  },
+  computed: {
+    // 计算属性的 getter
+    storyPoint: function () {
+      // `this` 指向 vm 实例
+      let points = 0;
+      for( let i of this.storyList){
+        points+=i.points
+      }
+      return points
+    }
+  },
+  methods: {
+    deleteTask () {
+      let param = new URLSearchParams()
+      param.append('tid', this.id)
+      let self = this
+
+      axios.post(this.baseUrl + '/task/delete_task', param).then((res) => {
+        switch (res.data) {
+          case 'success':
+            // self.$router.go(0)
+            console.log('删除成功')
+            let index =-1;
+            for (let i = 0; i < self.$parent.taskList.length; i++) {
+              if (self.$parent.taskList[i].tid == this.id){
+                index =i;
+                break;
+              }
+            }
+            if (index > -1) {
+              self.$parent.taskList.splice(index, 1);
+            }
+            break
+          case 'fail':
+            console.log('删除失败!!!!!!')
+            break
+        }
+      })
+      console.log('delete success')
+    },
+    addStory(){
+      let param = new URLSearchParams()
+      param.append('tid', this.id)
+      param.append('rid', this.rid)
+      param.append('title', this.add_title)
+      param.append('desc', this.add_desc)
+      param.append("points",this.add_points)
+      let self = this
+      axios.post(this.baseUrl+'/story/add_story', param).then((res) => {
+        self.storyList.push(res.data)
+        self.modal_show = false
+        console.log("添加成功")
+      })
+    }
+  },
+  mounted () {
+    let self = this
+    axios.get(this.baseUrl + '/story/get_story_task', {
+      params: {
+        tid: self.id
+      }
+    }).then((res) => {
+      self.storyList = res.data
+    })
   }
 }
 </script>

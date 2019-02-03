@@ -6,8 +6,10 @@
             footer-tag="footer" v-b-modal="'story_modal_'+id">
       <div style="margin-top: 40px;">
         <label style="float:left">{{storyPoint}}</label>
-        <b-button href="#" variant="outline-warning" size="sm" style="float:right;">删除
-        </b-button>
+        <b-btn variant="outline-warning" size="sm" style="float:right;" @click="deleteStory">删除
+        </b-btn>
+        &nbsp;
+        <b-btn variant="outline-warning" size="sm" style="float:right;margin-right: 5px" v-b-modal="'story_modal_'+id">编辑 </b-btn>
       </div>
       <!--<p class="card-text">
       Header and footers using slots.</p>-->
@@ -30,7 +32,7 @@
                   <b-form-group label="标题:"
                                 label-for="title">
                     <b-form-input type="text"
-                                  v-model="form.title"
+                                  v-model="title"
                                   required
                                   placeholder="Enter title">
                     </b-form-input>
@@ -38,7 +40,7 @@
                   <b-form-group label="描述:"
                                 label-for="desc">
                     <b-form-textarea placeholder="Enter some description"
-                                     v-model="form.desc"
+                                     v-model="desc"
                                      :rows="4"
                                      :max-rows="6">
                     </b-form-textarea>
@@ -68,14 +70,45 @@ export default {
   props: {
     id: Number,
     title: String,
+    desc: String,
     storyPoint: Number
   },
   data () {
     return {
-      form: {
-        title: '',
-        desc: ''
-      }
+      baseUrl: process.env.VUE_APP_URL,
+      // add_title: '',
+      // add_desc: ''
+
+    }
+  },
+  methods: {
+    deleteStory () {
+      let param = new URLSearchParams()
+      param.append('sid', this.id)
+      let self = this
+
+      axios.post(this.baseUrl + '/story/delete_story', param).then((res) => {
+        switch (res.data) {
+          case 'success':
+            // self.$router.go(0)
+            console.log('删除成功')
+            let index =-1;
+            for (let i = 0; i < self.$parent.storyList.length; i++) {
+              if (self.$parent.storyList[i].sid == this.id){
+                index =i;
+                break;
+              }
+            }
+            if (index > -1) {
+              self.$parent.storyList.splice(index, 1);
+            }
+            break
+          case 'fail':
+            console.log('删除失败!!!!!!')
+            break
+        }
+      })
+      console.log('delete success')
     }
   }
 }
