@@ -6,8 +6,12 @@
         <b-col cols="2"/>
         <b-col cols="8">
           <div style="text-align: center;margin-top: 20px">
-            <h1 style="display: inline-block">我的Map列表</h1>
+            <h1>我的Map列表</h1>
+          </div>
+          <div style="height: 50px">
             <b-btn class="add_button" variant="outline-success" v-b-modal.add_map >添加</b-btn>
+            <b-btn class="search_button" variant="outline-info" >搜索</b-btn>
+            <b-input class="search_input" placeholder="查找map"></b-input>
             <b-modal v-model="show" centered id="add_map" title="新建Map" style="text-align : left">
               <b-form>
                 <b-form-group label="标题:"
@@ -97,7 +101,19 @@ export default {
     display: inline-block;
     margin-top: 15px;
   }
-
+  .search_button {
+    float: right;
+    display: inline-block;
+    margin-top: 15px;
+    margin-right: 15px;
+  }
+  .search_input {
+    float: right;
+    display: inline-block;
+    width: 200px;
+    margin-top: 15px;
+    margin-right: 5px;
+  }
   .main-wrapper {
     margin-top: 64px;
   }
