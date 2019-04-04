@@ -10,8 +10,8 @@
           </div>
           <div style="height: 50px">
             <b-btn class="add_button" variant="outline-success" v-b-modal.add_map >添加</b-btn>
-            <b-btn class="search_button" variant="outline-info" >搜索</b-btn>
-            <b-input class="search_input" placeholder="查找map"></b-input>
+            <b-btn class="search_button" variant="outline-info" @click="searchMap">搜索</b-btn>
+            <b-input class="search_input" placeholder="查找map" v-model="search_key"></b-input>
             <b-modal v-model="show" centered id="add_map" title="新建Map" style="text-align : left">
               <b-form>
                 <b-form-group label="标题:"
@@ -61,10 +61,22 @@ export default {
   data () {
     return {
       baseUrl: process.env.VUE_APP_URL,
-      mapList: [],
+      allMapList: [],
       add_title: '',
       add_des: '',
+      search_key:'',
       show:false
+    }
+  },
+  computed: {
+    mapList () {
+      let lists = []
+      this.allMapList.forEach(item => {
+        if(item.mapTitle.indexOf(this.search_key) !== -1){
+          lists.push(item)
+        }
+      })
+      return lists
     }
   },
   methods:{
@@ -75,9 +87,17 @@ export default {
       param.append('mapDesc', this.add_des)
       let self = this
       axios.post(this.baseUrl+'/map/add_map', param).then((res) => {
-        self.mapList.push(res.data)
+        self.allMapList.push(res.data)
         self.show = false
         console.log("添加成功")
+      })
+    },
+    searchMap(){
+      this.mapList=[]
+      this.allMapList.forEach(item => {
+        if(item.mapTitle.indexOf(this.search_key) !== -1){
+          this.mapList.push(item)
+        }
       })
     }
   },
@@ -88,8 +108,7 @@ export default {
         userId: getCookie('userId')
       }
     }).then((res) => {
-      self.mapList = res.data
-      console.log(self.mapList)
+      self.allMapList = res.data
     })
   }
 }

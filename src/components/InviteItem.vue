@@ -1,67 +1,80 @@
 <template>
-  <div class="mapItem">
-    <b-card :title=mapItem.mapTitle :id="'mapItem'+mapItem.id" v-show="show">
+  <div class="inviteItem">
+    <b-card :title="inviteItem.inviter+'邀请您:'" v-show="show">
       <p class="card-text">
-        {{mapItem.mapDesc}}
+        参与StoryMapping “{{inviteItem.mapTitle}}” 的开发
       </p>
-      <b-link :to="'concreteMap/'+mapItem.id"
-              class="card-link">查看map
-      </b-link>
-      <b-link href="#"
-              class="card-link" @click="deleteMap">删除Map
-      </b-link>
+      <div style="display: inline-block" v-if="inviteItem.state === 'unprocessed'">
+        <b-btn size="sm" class="button" variant="outline-success">接受</b-btn>
+        <b-btn size="sm" class="button" variant="outline-warning">拒绝</b-btn>
+      </div>
+      <div style="display: inline-block;margin-right: 10px" v-else-if="inviteItem.state === 'accept'">
+        <p class="text-success">邀请已接受</p>
+      </div>
+      <div style="display: inline-block;margin-right: 10px" v-else>
+        <p class="text-warning">邀请已拒绝</p>
+      </div>
+      <b-btn size="sm" class="button" variant="outline-danger">删除</b-btn>
     </b-card>
   </div>
 </template>
 
 <script>
-import {getCookie} from '../assets/Cookie'
+import { getCookie } from '../assets/Cookie'
 
 export default {
-  name: 'MapItem',
+  name: 'InviteItem',
   props: {
-    mapItem: {
+    inviteItem: {
       id: Number,
+      inviterId: Number,
+      inviter: String,
+      inviteeId: Number,
+      invitee: String,
+      mid: Number,
       mapTitle: String,
-      mapDesc: String
+      state: String
     }
   },
-  data(){
-    return{
+  data () {
+    return {
       baseUrl: process.env.VUE_APP_URL,
-      show:true
+      show: true
     }
   },
   methods: {
-    deleteMap () {
-      let param = new URLSearchParams()
-      param.append('userId',getCookie('userId'))
-      param.append('mapId', this.mapItem.id)
-      let self = this
-
-      axios.post(this.baseUrl+'/map/delete_map',param).then((res)=>{
-        switch (res.data) {
-          case 'success':
-            this.show = false
-            console.log('删除成功')
-            break;
-          case 'fail':
-            console.log('删除失败!!!!!!')
-            break;
-        }
-        })
-      console.log('delete success')
+    deleteInvite () {
+      // let param = new URLSearchParams()
+      // param.append('userId',getCookie('userId'))
+      // param.append('mapId', this.mapItem.id)
+      //
+      // axios.post(this.baseUrl+'/map/delete_map',param).then((res)=>{
+      //   switch (res.data) {
+      //     case 'success':
+      //       this.show = false
+      //       console.log('删除成功')
+      //       break;
+      //     case 'fail':
+      //       console.log('删除失败!!!!!!')
+      //       break;
+      //   }
+      //   })
+      // console.log('delete success')
     }
   },
   mounted () {
-
-    console.log('mapItem id:      ' + this.mapItem.id)
+    console.log('inviteItem id:      ' + this.inviteItem.id)
   }
 }
 </script>
 
-<style scoped>
-  .mapItem {
+<style scoped lang="scss">
+  .inviteItem {
     margin: 10px 0
+  }
+
+  .button {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 </style>
