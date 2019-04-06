@@ -1,12 +1,12 @@
 <template>
   <div class="inviteItem">
-    <b-card :title="inviteItem.inviter+'邀请您:'" v-show="show">
+    <b-card :title="'用户_'+inviteItem.inviterId+'邀请您:'" v-show="show">
       <p class="card-text">
-        参与StoryMapping “{{inviteItem.mapTitle}}” 的开发
+        参与StoryMapping “map_{{inviteItem.mid}}” 的开发
       </p>
       <div style="display: inline-block" v-if="inviteItem.state === 'unprocessed'">
-        <b-btn size="sm" class="button" variant="outline-success">接受</b-btn>
-        <b-btn size="sm" class="button" variant="outline-warning">拒绝</b-btn>
+        <b-btn size="sm" class="button" variant="outline-success" @click="handleInvite('accept')">接受</b-btn>
+        <b-btn size="sm" class="button" variant="outline-warning" @click="handleInvite('reject')">拒绝</b-btn>
       </div>
       <div style="display: inline-block;margin-right: 10px" v-else-if="inviteItem.state === 'accept'">
         <p class="text-success">邀请已接受</p>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { getCookie } from '../assets/Cookie'
 
 export default {
   name: 'InviteItem',
@@ -28,11 +27,11 @@ export default {
     inviteItem: {
       id: Number,
       inviterId: Number,
-      inviter: String,
+      // inviter: String,
       inviteeId: Number,
-      invitee: String,
+      // invitee: String,
       mid: Number,
-      mapTitle: String,
+      // mapTitle: String,
       state: String
     }
   },
@@ -43,6 +42,12 @@ export default {
     }
   },
   methods: {
+    handleInvite(state){
+      console.log(state)
+    },
+
+
+
     deleteInvite () {
       // let param = new URLSearchParams()
       // param.append('userId',getCookie('userId'))

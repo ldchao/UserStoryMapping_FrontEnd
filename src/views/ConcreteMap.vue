@@ -47,13 +47,14 @@
                         label-for="invite_input">
             <b-row>
               <b-col cols="10">
-                <b-form-input id="invite_input" list="invite-list-id" placeholder="邀请人"/>
+
+                <b-form-input id="invite_input" list="invite-list-id" placeholder="邀请人"  v-model="invitee_id"/>
                 <datalist id="invite-list-id">
-                  <option v-for="invite in invite_list">{{ invite }}</option>
+                  <option v-for="invite in invite_list" v-bind:value="invite.id">{{ invite.username }}</option>
                 </datalist>
               </b-col>
               <b-col cols="2">
-                <b-btn variant="primary" @click="" style="margin-left: -10px">邀请</b-btn>
+                <b-btn variant="primary" @click="invite_people" style="margin-left: -10px">邀请</b-btn>
               </b-col>
             </b-row>
           </b-form-group>
@@ -72,10 +73,7 @@
 
       <b-modal id="edit_log" centered title="编辑记录">
         <div style="height:400px; overflow-y:scroll;" >
-          <p class="my-4" v-for="i in 20" :key="i">
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </p>
+          <edit-item v-for="editItem in editList" :edit-item="editItem"></edit-item>
         </div>
       </b-modal>
     </div>
@@ -86,60 +84,23 @@
 import Navbar from '../components/Navbar'
 import ActicityCard from '../components/ActivityCard'
 import InviteLogItem from '../components/InviteLogItem'
+import EditItem from '../components/EditItem'
+import { getCookie } from '../assets/Cookie'
 
 export default {
   name: 'ConcreteMap',
-  components: { ActicityCard, Navbar, InviteLogItem },
+  components: { EditItem, ActicityCard, Navbar, InviteLogItem },
   data () {
     return {
       baseUrl: process.env.VUE_APP_URL,
       add_title: '',
+      invitee_id: '',
       add_desc: '',
       activityList: [],
-      invite_list: ['abc', 'a2bc', 'dbc', 'abdc', 'absc', 'aabc'],
+      invite_list: [],
       show: false,
-      inviteLogList: [
-        {
-          id: 1,
-          inviterId: 3,
-          inviter: 'ldchao',
-          inviteeId: 1,
-          invitee: '海龙',
-          mid: 2,
-          mapTitle: '测试',
-          state: 'accept'
-        },
-        {
-          id: 2,
-          inviterId: 3,
-          inviter: 'ldchao',
-          inviteeId: 1,
-          invitee: '海龙',
-          mid: 2,
-          mapTitle: '测试',
-          state: 'refuse'
-        },
-        {
-          id: 3,
-          inviterId: 3,
-          inviter: 'ldchao',
-          inviteeId: 1,
-          invitee: '海龙',
-          mid: 2,
-          mapTitle: '测试',
-          state: 'unprocessed'
-        },
-        {
-          id: 4,
-          inviterId: 3,
-          inviter: 'ldchao',
-          inviteeId: 1,
-          invitee: '海龙',
-          mid: 2,
-          mapTitle: '测试',
-          state: 'unprocessed'
-        }
-      ]
+      inviteLogList: [],
+      editList:[]
     }
   },
   methods: {
@@ -156,6 +117,18 @@ export default {
         this.add_title = ''
         this.add_desc = ''
       })
+    },
+    invite_people () {
+      let param = new URLSearchParams()
+      param.append('mapId', this.$route.params.id)
+      param.append('inviteeId', this.invitee_id)
+      param.append('inviterId', getCookie('userId'))
+      let self = this
+      axios.post(this.baseUrl + '/invite/invite_user', param).then((res) => {
+        self.inviteLogList.push(res.data)
+        console.log('邀请成功')
+        this.invitee_id = ''
+      })
     }
   },
   mounted () {
@@ -167,16 +140,40 @@ export default {
     }).then((res) => {
       self.activityList = res.data
     })
+
+    axios.get(this.baseUrl + '/user/search_user', {
+      params: {
+        name: ""
+      }
+    }).then((res) => {
+      self.invite_list = res.data
+    })
+
+    axios.get(this.baseUrl + '/editlog/get_editlog_map',{
+      params: {
+        mid: self.$route.params.id
+      }
+    }).then((res) => {
+      self.editList = res.data
+    })
+
+    axios.get(this.baseUrl + '/invite/check_invite',{
+      params: {
+        uid: getCookie('userId')
+      }
+    }).then((res) => {
+      self.inviteLogList = res.data
+    })
   }
 }
 </script>
 
 <style scoped>
+  @import "../assets/css/map.css";
   .concreteMap_list_li {
     border-left: 1px solid #D3D3D3;
     padding-left: 10px;
     padding-right: 10px;
   }
 
-  @import "../assets/css/map.css";
 </style>

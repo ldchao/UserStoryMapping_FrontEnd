@@ -16,8 +16,8 @@
       <b-navbar-nav class="ml-auto">
 
         <!--<b-nav-form>-->
-          <!--<b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>-->
-          <!--<b-button size="sm" class="my-2 my-sm-0" type="submit">查找</b-button>-->
+        <!--<b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>-->
+        <!--<b-button size="sm" class="my-2 my-sm-0" type="submit">查找</b-button>-->
         <!--</b-nav-form>-->
         <b-nav-item v-if="isMap" v-b-modal.invite_people>邀请成员</b-nav-item>
         <b-nav-item v-if="isMap" v-b-modal.edit_log>编辑记录</b-nav-item>
@@ -37,19 +37,19 @@
 </template>
 
 <script>
-import { setCookie, getCookie, delCookie }from '../assets/Cookie'
+import { setCookie, getCookie, delCookie } from '../assets/Cookie'
 
 export default {
   name: 'Navbar',
   props: {
-    isMap:{   // 可选字段，有默认值
+    isMap: {   // 可选字段，有默认值
       default: false,
       type: Boolean
     }
   },
-  data(){
+  data () {
     return {
-      username:''
+      username: ''
     }
   },
   methods: {
@@ -65,7 +65,7 @@ export default {
     let uname = getCookie('username')
     this.username = uname
     /*如果cookie不存在，则跳转到登录页*/
-    if(uname == ""){
+    if (uname == '') {
       this.$router.push('/')
     }
   }

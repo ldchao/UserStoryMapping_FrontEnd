@@ -1,7 +1,7 @@
 <template>
   <div class="inviteLogItem">
     <b-row>
-      <b-col cols="6">{{inviteLogItem.invitee}}</b-col>
+      <b-col cols="6">用户_{{inviteLogItem.inviteeId}}</b-col>
       <b-col cols="3">
         <p v-if="inviteLogItem.state === 'unprocessed'" class="text-secondary">未处理</p>
         <p v-else-if="inviteLogItem.state === 'accept'" class="text-success">已接受</p>
@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { getCookie } from '../assets/Cookie'
 
 export default {
   name: 'InviteLogItem',
@@ -24,11 +23,11 @@ export default {
     inviteLogItem: {
       id: Number,
       inviterId: Number,
-      inviter: String,
+      // inviter: String,
       inviteeId: Number,
-      invitee: String,
+      // invitee: String,
       mid: Number,
-      mapTitle: String,
+      // mapTitle: String,
       state: String
     }
   },
