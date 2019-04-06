@@ -63,7 +63,7 @@
     </div>
     <hr>
     <div v-for="storyItem in storyList">
-      <story-card :id="storyItem.sid" :title="storyItem.title" :desc="storyItem.desc" :story-point="storyItem.points"></story-card>
+      <story-card :id="storyItem.sid" :title="storyItem.title" :desc="storyItem.desc" :story-point="storyItem.points" :state="storyItem.state"></story-card>
     </div>
     <b-btn variant="outline-warning" class="css_add_story" v-b-modal="'add_story'+id">添加story
       </b-btn>

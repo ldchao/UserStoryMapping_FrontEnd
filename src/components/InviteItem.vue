@@ -42,11 +42,27 @@ export default {
     }
   },
   methods: {
-    handleInvite(state){
-      console.log(state)
+    handleInvite (state) {
+      let param = new URLSearchParams()
+      param.append('inviteId', this.inviteItem.id)
+      param.append('answer', state)
+      let self = this
+
+      axios.post(this.baseUrl + '/invite/answer_invited', param).then((res) => {
+        let index = -1
+        for (let i = 0; i < self.$parent.inviteList.length; i++) {
+          if (self.$parent.inviteList[i].id === self.inviteItem.id) {
+            index = i
+            break
+          }
+        }
+        if (index > -1) {
+          self.$parent.inviteList.splice(index, 1)
+
+        }
+      })
+      console.log('delete success')
     },
-
-
 
     deleteInvite () {
       // let param = new URLSearchParams()
