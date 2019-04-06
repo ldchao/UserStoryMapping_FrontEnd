@@ -26,6 +26,7 @@ export default {
       itemId: Number,
       desc: String,
       time: String,
+      code: Number
     }
   },
   filters: {

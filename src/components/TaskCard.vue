@@ -123,7 +123,7 @@ export default {
       add_title: '',
       add_desc: '',
       add_points: '',
-      rid: 4,
+      // rid: '',
       storyList: []
     }
   },
@@ -168,9 +168,16 @@ export default {
       console.log('delete success')
     },
     addStory(){
+      let release_list = this.$parent.$parent.releaseList
+      if(release_list.length === 0){
+        alert("请先新建release")
+        return
+      }
+      console.log(release_list[0])
+      console.log(release_list[0].rid)
       let param = new URLSearchParams()
       param.append('tid', this.id)
-      param.append('rid', this.rid)
+      param.append('rid', release_list[0].rid)
       param.append('title', this.add_title)
       param.append('desc', this.add_desc)
       param.append("points",this.add_points)

@@ -65,7 +65,7 @@
                 ></b-form-select>
               </b-form-group>
               <b-form-group>
-                <b-button variant="primary" style="margin-top: 10%;float: right" @click="addStory">提交</b-button>
+                <b-button variant="primary" style="margin-top: 10%;float: right" @click="updateStory">提交</b-button>
               </b-form-group>
             </b-form>
           </div>
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    addStory(){
+    updateStory(){
       let param = new URLSearchParams()
       param.append('sid', this.id)
       param.append('state', this.state)
